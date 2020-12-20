@@ -24,5 +24,12 @@ module.exports=function(io,Users){
             });
             callback();
         });
+
+        socket.on('disconnect',()=>{
+            var user=users.RemoveUser(socket.id);
+            if(user){
+                io.to(user.room).emit('userList',users.GetUserList(user.room));
+            }
+        })
     });
 }

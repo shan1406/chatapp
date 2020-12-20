@@ -31,7 +31,7 @@ module.exports=function(async,Club,_){
                 }
                 
                 const countrySort=_.sortBy(res2,'_id');
-                return res.render('home',{title:'Chatapp-home',data:dataChunk,country:countrySort});
+                return res.render('home',{title:'Chatapp-home',user:req.user,data:dataChunk,country:countrySort});
             })
             
         }

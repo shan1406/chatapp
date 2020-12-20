@@ -8,6 +8,21 @@ class Users{
         this.users.push(users);
         return users;
     }
+    
+    RemoveUser(id){
+        var user=this.GetUser(id);
+        if(user){
+            this.users=this.users.filter((user)=>user.id!==id);
+        }
+        return user;
+    }
+
+    GetUser(id){
+        var getuser=this.users.filter((userId)=>{
+            return userId.id===id;
+        })[0];
+        return getuser;
+    }
 
     GetUserList(room){
         var users=this.users.filter((user)=>user.room===room);
