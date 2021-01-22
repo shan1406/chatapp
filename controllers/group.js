@@ -3,6 +3,7 @@ module.exports=function(Users,async){
         SetRouting: function(router){
             router.get('/group/:name',this.groupPage);
             router.post('/group/:name',this.groupPostPage);
+            router.get('/logout',this.logout);
         },
 
         groupPage: function(req,res){
@@ -69,9 +70,9 @@ module.exports=function(Users,async){
                     if(req.body.senderId){
                        Users.update({
                            '_id':req.user._id,
-                           'friendList.friendId':{$ne:req.body.senderId}
+                           'friendsList.friendId':{$ne:req.body.senderId}
                        },{
-                           $push:{friendList:{
+                           $push:{friendsList:{
                                friendId:req.body.senderId,
                                friendName:req.body.senderName
                            }},
@@ -90,16 +91,15 @@ module.exports=function(Users,async){
                     if(req.body.senderId){
                        Users.update({
                            '_id':req.body.senderId,
-                           'friendList.friendId':{$ne:req.user._id}
+                           'friendsList.friendId':{$ne:req.user._id}
                        },{
-                           $push:{friendList:{
-                               friendId:require.user._id,
+                           $push:{friendsList:{
+                               friendId:req.user._id,
                                friendName:req.user.username
                            }},
                            $pull:{sentRequest:{
                                username:req.user.username
                            }},
-                           $inc:{totalRequest:-1}
                         },(err,count)=>{
                             callback(err,count);
                        });
@@ -138,6 +138,12 @@ module.exports=function(Users,async){
                 }
             ],(err,results)=>{
                 res.redirect('/group/'+req.params.name);
+            });
+        },
+        logout: function(req,res){
+            req.logout();
+            req.session.destroy((err)=>{
+                res.redirect('/');
             });
         }
     }
