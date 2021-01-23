@@ -11,7 +11,11 @@ $(document).ready(function(){
             room:room,
             name:name,
             img:img
-        })
+        });
+
+        socket.on('message display', function(){
+            $('#reload').load(location.href + ' #reload');
+        });
     });
 
     socket.on('loggedInUser', function(users){
